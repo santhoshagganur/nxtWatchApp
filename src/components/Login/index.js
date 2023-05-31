@@ -5,7 +5,13 @@ import './index.css'
 import {LoginContainer} from './styledComponents'
 
 class Login extends Component {
-  state = {username: '', password: '', showErrorMsg: false, errorMsg: ''}
+  state = {
+    username: '',
+    password: '',
+    showErrorMsg: false,
+    errorMsg: '',
+    showPassword: false,
+  }
 
   changeUsername = event => {
     this.setState({username: event.target.value})
@@ -23,6 +29,14 @@ class Login extends Component {
 
   renderFailureView = errorMsg => {
     this.setState({showErrorMsg: true, errorMsg})
+  }
+
+  showUserPassword = event => {
+    if (event.target.checked) {
+      this.setState({showPassword: true})
+    } else {
+      this.setState({showPassword: false})
+    }
   }
 
   submitUserCredentials = async event => {
@@ -47,7 +61,13 @@ class Login extends Component {
   }
 
   render() {
-    const {showErrorMsg, errorMsg, username, password} = this.state
+    const {
+      showErrorMsg,
+      errorMsg,
+      username,
+      password,
+      showPassword,
+    } = this.state
 
     return (
       <LoginContainer className="login-container">
@@ -73,7 +93,7 @@ class Login extends Component {
               PASSWORD
             </label>
             <input
-              type="text"
+              type={showPassword ? 'text' : 'password'}
               className="input-element"
               id="password"
               placeholder="Password"
@@ -81,10 +101,17 @@ class Login extends Component {
               value={password}
             />
             <div className="show-password-container">
-              <input type="checkbox" />
-              <p className="show-password-text"> Show Password </p>
+              <input
+                type="checkbox"
+                id="checkPassword"
+                onChange={this.showUserPassword}
+              />
+              <label className="show-password-text" htmlFor="checkPassword">
+                {' '}
+                Show Password{' '}
+              </label>
             </div>
-            <button type="button" className="login-button">
+            <button type="submit" className="login-button">
               Login
             </button>
             {showErrorMsg ? <p className="error-msg"> {errorMsg} </p> : null}
